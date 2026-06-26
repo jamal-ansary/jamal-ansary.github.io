@@ -16,7 +16,7 @@
 <td style="padding:20px;">
 
 <p>
-  <a href="../index.html">← Home</a>
+  <a href="../index.html">&larr; Home</a>
 </p>
 
 <h1>Grounding Is a Reasoning Problem</h1>
@@ -28,42 +28,122 @@
   </em>
 </p>
 
-<img src="../images/grounding_reasoning.png"
-     alt="Grounding Is a Reasoning Problem"
+<img src="../images/grounding_dual_view_settings.png"
+     alt="Dual-view screen with two Settings targets"
      style="width:100%;max-width:800px;border-radius:8px;margin:20px 0;">
 
 <p style="text-align: justify;">
-Most multimodal agents treat grounding as a localization problem: finding the
-correct button, icon, or object on the screen. While localization is an
-important component, it is only one piece of what modern multimodal agents must
-actually solve.
+Let's say you have a vision-language model fine-tuned for grounding, and your
+task is: <strong>go to Settings and turn on Bluetooth.</strong>
 </p>
 
 <p style="text-align: justify;">
-Consider the instruction <strong>"Go to the Settings app."</strong> If the
-agent is currently inside the Navigation app, there is no Settings icon to
-click. A purely visual grounding system cannot solve this task because the
-target does not exist on the current screen.
+The current view shows two possible Settings targets. One settings button
+belongs to the top navigation area. The other Settings icon appears inside the
+app grid. The important question is not simply which pixels look like Settings.
+The important question is: <strong>which Settings target is most likely to help
+you complete the task?</strong>
 </p>
 
 <p style="text-align: justify;">
-Instead, the agent must recognize its current state, infer that the Settings
-application is likely accessible from the Home screen, navigate Home, and only
-then locate the Settings app. The correct action is therefore not simply
-localization—it is reasoning about what action should be taken before
-localization even becomes possible.
+In this case, the agent should click the Settings app in the grid, because that
+is where Bluetooth controls are most likely to live. But if you pass this screen
+to a grounding-only model, such as
+<a href="https://huggingface.co/papers/2604.23941">this grounding model</a>,
+there is a real chance it will choose the wrong target. It may detect the
+visible word or icon "Settings" without understanding the user's intent.
 </p>
 
 <p style="text-align: justify;">
-This note argues that grounding is fundamentally a reasoning problem involving
-user intent, interface semantics, application state, and sequential decision
-making, rather than only a perception problem.
+That is why grounding needs reasoning or planning. The model has to understand
+the task, compare candidate targets, reason about the spatial layout, and
+connect each button's position and context to the intended action.
+</p>
+
+<p style="text-align: justify;color:#2563eb;">
+<strong>Grounding is not just finding the matching pixel. It is spatial
+reasoning, semantic understanding, and action planning working together.</strong>
 </p>
 
 <p style="text-align: justify;">
-<strong>Coming soon:</strong> This article will expand on these ideas with
-examples from GUI agents, Android automotive systems, long-horizon multimodal
-interaction, and recent work on computer-use agents.
+For spatial reasoning, see this reference:
+<a href="https://spatial-vlm.github.io/" style="color:#2563eb;font-weight:bold;">SpatialVLM</a>.
+</p>
+
+<h2>The First Step: Add a Planner</h2>
+
+<p style="text-align: justify;">
+The first step in developing a GUI agent is realizing that grounding alone is
+not enough. You need a planner.
+</p>
+
+<p style="text-align: justify;">
+The planner can be any strong vision-language model, such as a Qwen-VL-family
+model, GPT Vision, Gemini, or another open-source multimodal model. Its job is
+not just to point at pixels. Its job is to understand the task, inspect the
+screen, reason about the available options, and decide what action should happen
+next.
+</p>
+
+<p style="text-align: justify;">
+In the Bluetooth example, the planner should recognize that the Settings icon in
+the app grid is more relevant than the navigation settings button. Then it can
+pass the correct target to the grounding model for precise clicking.
+</p>
+
+<p style="text-align: justify;color:#2563eb;">
+<strong>Planner first. Grounder second.</strong>
+</p>
+
+<p style="text-align: justify;">
+The planner decides <em>what</em> should be clicked. The grounding model decides
+<em>where</em> to click.
+</p>
+
+<h2>Can We Plan and Ground at the Same Time?</h2>
+
+<img src="../images/ui_tars_agent_evolution.png"
+     alt="UI-TARS agent evolution figure"
+     style="width:100%;max-width:800px;border-radius:8px;margin:20px 0;">
+
+<p style="text-align: justify;">
+Honestly, this is the million-dollar question.
+</p>
+
+<p style="text-align: justify;">
+When I first saw this figure from
+<a href="https://arxiv.org/pdf/2501.12326">UI-TARS</a>, I was pretty sure
+end-to-end GUI agents would dominate. A single model that can observe the
+screen, understand the task, plan the next step, and ground the exact action
+sounds like the cleanest possible architecture.
+</p>
+
+<p style="text-align: justify;">
+But we are not there yet.
+</p>
+
+<p style="text-align: justify;">
+In practice, the current performance of vision-language models can drop when
+you ask them to plan and ground in one pass. The model has to solve two
+difficult problems at the same time: decide <strong>what</strong> action should
+happen next, and identify <strong>where</strong> that action should happen on
+the screen.
+</p>
+
+<p style="text-align: justify;">
+That is especially risky for actions like swiping, dragging, or clicking inside
+complicated layouts, such as dual-view screens, split panels, nested menus, or
+app grids with repeated icons.
+</p>
+
+<p style="text-align: justify;">
+End-to-end agents are probably the future. But today, separating planning from
+grounding gives us more control, more interpretability, and fewer costly
+mistakes.
+</p>
+
+<p style="text-align: justify;">
+<strong>Coming soon:</strong> This article will be updated.
 </p>
 
 <hr style="margin:50px 0 30px 0;">
@@ -102,4 +182,3 @@ to hear from you.
 
 </body>
 </html>
-
