@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Grounding Is a Reasoning Problem | Jamal Ansary</title>
+  <meta name="author" content="Jamal Ansary">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../stylesheet.css">
+</head>
+
+<body>
+  <table style="width:100%;max-width:800px;border:0;border-spacing:0;border-collapse:separate;margin:auto;">
+    <tbody>
+      <tr>
+        <td style="padding:20px;">
+
+          <p>
+            <a href="../index.html">← Home</a>
+          </p>
+
+          <h1>Grounding Is a Reasoning Problem</h1>
+
+          <p>
+            <em>
+              Grounding is more than finding the correct pixel. It requires
+              understanding intent, context, semantics, and planning the next action.
+            </em>
+          </p>
+
+          <img src="../images/grounding_reasoning.png"
+               alt="Grounding Is a Reasoning Problem"
+               style="width:100%;max-width:800px;border-radius:8px;margin:20px 0;">
+
+          <p style="text-align: justify;">
+            Most multimodal agents treat grounding as a localization problem:
+            find the right button, icon, or object on the screen. But real user
+            interfaces often require something more.
+          </p>
+
+          <p style="text-align: justify;">
+            Consider the instruction: <strong>go to the Settings app</strong>.
+            If the agent is currently inside the Navigation app, the Settings icon
+            is not visible. The correct next action is not to click a visible
+            Settings button. The agent must first recognize the current app state,
+            infer that Settings is likely accessible from the Home screen, navigate
+            Home, and then locate the Settings app.
+          </p>
+
+          <p style="text-align: justify;">
+            This means grounding is not only about perception. It requires reasoning
+            over user intent, application context, interface semantics, and the
+            sequence of actions needed to complete the task.
+          </p>
+
+          <p style="text-align: justify;">
+            <strong>Coming soon:</strong> I will expand this note with examples from
+            GUI agents, Android automotive systems, and long-horizon multimodal
+            interaction.
+          </p>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>
